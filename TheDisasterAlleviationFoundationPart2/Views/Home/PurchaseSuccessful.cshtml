@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Purchase Successful";
+}
+
+<h1>Purchase Successful</h1>
+
+<p>
+    Updated Available Money: @(((decimal)ViewBag.UpdatedAvailableMoney).ToString("C"))
+</p>
+
+<p>Your purchase has been successfully captured.</p>
+<p>Thank you for your contribution. The goods have been added to the inventory and allocated to the specific disaster.</p>
+
+<a asp-controller="Home" asp-action="Index">Go to Homepage</a>

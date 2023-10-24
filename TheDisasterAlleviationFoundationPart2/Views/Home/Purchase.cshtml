@@ -1,0 +1,32 @@
+﻿@model TheDisasterAlleviationFoundationPart2.Models.Purchase
+@{
+    ViewData["Title"] = "Capture Purchase";
+}
+
+<h1>Capture Purchase</h1>
+
+<form asp-action="Purchase" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="DisasterId">Disaster ID</label>
+        <input asp-for="DisasterId" class="form-control" />
+        <span asp-validation-for="DisasterId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Amount">Amount</label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Capture Purchase</button>
+</form>
+
+<a asp-action="Index">Back to List</a>
