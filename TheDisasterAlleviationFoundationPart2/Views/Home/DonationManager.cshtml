@@ -1,0 +1,64 @@
+﻿@model TheDisasterAlleviationFoundationPart2.Models.DonationManager
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Donation Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: black;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Donation Manager</h1>
+
+    <table>
+        <tr>
+            <th>Total Monetary Donations Received</th>
+            <td>@ViewData["TotalMonetaryDonationsReceived"]</td>
+        </tr>
+        <tr>
+            <th>Total Goods Received</th>
+            <td>@ViewData["TotalGoodsReceived"]</td>
+        </tr>
+        <tr>
+            <th>Money Allocated</th>
+            <td>@ViewData["moneyallocated"]</td>
+        </tr>
+        <tr>
+            <th>Type Of Disaster</th>
+            <td>@ViewData["TypeOfDisaster"]</td>
+        </tr>
+        <tr>
+            <th>Goods Description</th>
+            <td>@ViewData["GoodsDescription"]</td>
+        </tr>
+    </table>
+</body>
+</html>

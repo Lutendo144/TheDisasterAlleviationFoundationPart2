@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Security.Policy;
 using TheDisasterAlleviationFoundationPart2.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -322,7 +323,7 @@ namespace TheDisasterAlleviationFoundationPart2.Controllers
         [HttpPost]
         public IActionResult Allocation(Allocation viewModel)
         {
-            
+
 
             SqlCommand cmd;
             SqlConnection conn = new SqlConnection(connectionString);
@@ -339,7 +340,7 @@ namespace TheDisasterAlleviationFoundationPart2.Controllers
             // Calculate the updated available money
             decimal updatedAvailableMoney = allocatedAmount;
 
-           
+
             ViewData["UpdatedAvailableMoney"] = updatedAvailableMoney;
 
             cmd.ExecuteNonQuery();
@@ -417,7 +418,7 @@ namespace TheDisasterAlleviationFoundationPart2.Controllers
             UpdateAvailableMoney(availableMoney - purchase.Amount);
 
 
-          
+
             decimal updatedAvailableMoney = availableMoney - purchase.Amount;
 
             ViewBag.UpdatedAvailableMoney = updatedAvailableMoney;
@@ -426,7 +427,7 @@ namespace TheDisasterAlleviationFoundationPart2.Controllers
             return View("PurchaseSuccessful");
 
 
-             decimal CalculateAvailableMoney()
+            decimal CalculateAvailableMoney()
             {
                 decimal availableMoney = 10000;
 
@@ -440,24 +441,85 @@ namespace TheDisasterAlleviationFoundationPart2.Controllers
             return View();
         }
 
-     
-      
+
+
 
         private void UpdateAvailableMoney(decimal newAmount)
         {
-          
+
         }
-   
+
         [HttpGet]
         public ActionResult Purchase()
         {
             return View();
         }
 
+
+
+
+        public IActionResult DonationManager()
+        {
+            decimal totalMonetaryDonationsReceived;
+            int totalGoodsReceived;
+            decimal moneyallocated;
+            string TypeOfDisaster = "";
+            string GoodsDescription = "";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Calculate total monetary donations
+                string monetaryQuery = "SELECT SUM(Amount) FROM MonetaryDonations";
+                using (SqlCommand monetaryCmd = new SqlCommand(monetaryQuery, conn))
+                {
+                    totalMonetaryDonationsReceived = Convert.ToDecimal(monetaryCmd.ExecuteScalar());
+                }
+
+                // Calculate total goods received
+                string goodsQuery = "SELECT SUM(NumberOfItems) FROM GoodsDonations";
+                using (SqlCommand goodsCmd = new SqlCommand(goodsQuery, conn))
+                {
+                    totalGoodsReceived = Convert.ToInt32(goodsCmd.ExecuteScalar());
+                }
+
+                // Calculate total goods received
+                string moneyQuery = "SELECT SUM(AllocationAmount) FROM Allocation";
+                using (SqlCommand moneyCmd = new SqlCommand(moneyQuery, conn))
+                {
+                    moneyallocated = Convert.ToDecimal(moneyCmd.ExecuteScalar());
+                }
+
+                // Fetch the description from the latest disaster
+                string disasterQuery = "SELECT TypeOfDisaster FROM GoodsAllocation";
+                using (SqlCommand disasterCmd = new SqlCommand(disasterQuery, conn))
+                {
+                    object disasterDescriptionObj = disasterCmd.ExecuteScalar();
+                    TypeOfDisaster = disasterDescriptionObj != null ? disasterDescriptionObj.ToString() : "";
+                }
+
+                // Fetch the description from the latest disaster
+                string GoodsDescriptionQuery = "SELECT GoodsDescription FROM GoodsAllocation";
+                using (SqlCommand GoodsDescriptionCmd = new SqlCommand(GoodsDescriptionQuery, conn))
+                {
+                    object GoodsDescriptionObj = GoodsDescriptionCmd.ExecuteScalar();
+                    GoodsDescription = GoodsDescriptionObj != null ? GoodsDescriptionObj.ToString() : "";
+                }
+            }
+
+                // Pass the information to the view
+                ViewData["TotalMonetaryDonationsReceived"] = (int)totalMonetaryDonationsReceived;
+            ViewData["TotalGoodsReceived"] = totalGoodsReceived;
+            ViewData["moneyallocated"] = moneyallocated;
+            ViewData["TypeOfDisaster"] = TypeOfDisaster;
+            ViewData["GoodsDescription"] = GoodsDescription;
+
+
+            return View();
+        }
+
+        // ... other actions ...
+
     }
-
-
-   
 }
-
-
