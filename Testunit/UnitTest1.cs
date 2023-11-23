@@ -11,19 +11,13 @@ namespace Testunit
         [Fact]
         public void DonationManager()
         {
-            // Arrange
+ 
             var loggerMock = new Mock<ILogger<HomeController>>();
-
-
-            // Create a mock GoodsAllocationModel or instantiate a real one as needed
-            //var DonationManagerModelMock = new Mock<DonationManager>();
 
             HomeController controller = new HomeController(loggerMock.Object);
 
-            // Act
             IActionResult result = controller.DonationManager();
 
-            // Assert using xUnit's Assert
             Xunit.Assert.IsType<ViewResult>(result);
         }
 
